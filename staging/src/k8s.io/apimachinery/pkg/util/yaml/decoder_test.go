@@ -211,6 +211,43 @@ stuff: 1
 	}
 }
 
+<<<<<<< HEAD
+=======
+func TestDecodeYAMLSeparatorValidation(t *testing.T) {
+	s := NewYAMLToJSONDecoder(bytes.NewReader([]byte(`---
+stuff: 1
+---    # Make sure termination happen with inline comment
+stuff: 2
+---
+stuff: 3
+--- Make sure uncommented content results YAMLSyntaxError
+
+ `)))
+	obj := generic{}
+	if err := s.Decode(&obj); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if fmt.Sprintf("%#v", obj) != `yaml.generic{"stuff":1}` {
+		t.Errorf("unexpected object: %#v", obj)
+	}
+	obj = generic{}
+	if err := s.Decode(&obj); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if fmt.Sprintf("%#v", obj) != `yaml.generic{"stuff":2}` {
+		t.Errorf("unexpected object: %#v", obj)
+	}
+	obj = generic{}
+	err := s.Decode(&obj)
+	if err == nil {
+		t.Fatalf("expected YamlSyntaxError, got nil instead")
+	}
+	if _, ok := err.(YAMLSyntaxError); !ok {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+>>>>>>> 0ae8773... add yaml separator validation and avoid silent ignoration
 func TestDecodeBrokenYAML(t *testing.T) {
 	s := NewYAMLOrJSONDecoder(bytes.NewReader([]byte(`---
 stuff: 1
