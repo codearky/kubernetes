@@ -21,7 +21,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/pkg/errors"
 	"io"
 	"strings"
 	"unicode"
@@ -292,11 +291,11 @@ func (r *YAMLReader) Read() ([]byte, error) {
 		if i := bytes.Index(line, []byte(separator)); i == 0 {
 			// We have a potential document terminator
 			i += sep
-			afterNoSpaces := strings.TrimSpace(string( line[i:]))
+			trimmed := strings.TrimSpace(string(line[i:]))
 			// We only allow comments and spaces following the yaml doc separator, otherwise we'll return an error
-			if len(afterNoSpaces) > 0 && string(afterNoSpaces[0]) != "#"  {
+			if len(trimmed) > 0 && string(trimmed[0]) != "#" {
 				return nil, YAMLSyntaxError{
-					err: errors.Errorf("invalid Yaml document separator: %s", afterNoSpaces),
+					err: fmt.Errorf("invalid Yaml document separator: %s", trimmed),
 				}
 			}
 			if buffer.Len() != 0 {

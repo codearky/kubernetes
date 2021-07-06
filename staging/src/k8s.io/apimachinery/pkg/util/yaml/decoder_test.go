@@ -211,8 +211,7 @@ stuff: 1
 	}
 }
 
-
-func TestDecodeYAMLSeparatorValidation (t *testing.T) {
+func TestDecodeYAMLSeparatorValidation(t *testing.T) {
 	s := NewYAMLToJSONDecoder(bytes.NewReader([]byte(`---
 stuff: 1
 ---    # Make sure termination happen with inline comment
@@ -239,7 +238,7 @@ stuff: 3
 	obj = generic{}
 	err := s.Decode(&obj)
 	if err == nil {
-		t.Fatalf("Expected YamlSyntaxError, got nil instead")
+		t.Fatalf("expected YamlSyntaxError, got nil instead")
 	}
 	if _, ok := err.(YAMLSyntaxError); !ok {
 		t.Fatalf("unexpected error: %v", err)
