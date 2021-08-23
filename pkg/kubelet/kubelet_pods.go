@@ -1605,6 +1605,7 @@ func (kl *Kubelet) convertStatusToAPIStatus(pod *v1.Pod, podStatus *kubecontaine
 // convertToAPIContainerStatuses converts the given internal container
 // statuses into API container statuses.
 func (kl *Kubelet) convertToAPIContainerStatuses(pod *v1.Pod, podStatus *kubecontainer.PodStatus, previousStatus []v1.ContainerStatus, containers []v1.Container, hasInitContainers, isInitContainer bool) []v1.ContainerStatus {
+	klog.V(1).Infof("Yoav: Pod %v === podStatus %v === previousStatus %v === containers %v === hasInitContainers %v === isInitContainer %v  ", pod, podStatus, previousStatus, containers, hasInitContainers, isInitContainer)
 	convertContainerStatus := func(cs *kubecontainer.Status) *v1.ContainerStatus {
 		cid := cs.ID.String()
 		status := &v1.ContainerStatus{
